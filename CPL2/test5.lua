@@ -1,0 +1,1 @@
+function a () x = 4 end
