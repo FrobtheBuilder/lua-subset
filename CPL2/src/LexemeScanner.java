@@ -15,60 +15,71 @@ static String a = "";
 			a += e.nextLine();
 		}
 		
-		String d = ""; 
-		String c = a.replaceAll("\\s+", "");
+		String f = ""; //Finding if the string equals to a token
+		String d = ""; //Reading the char b array and adding it together
 		char[] b = a.toCharArray();
+		
+		/*
+		 * This part is where it will read the string and breaking up the string
+		 * into substring after after whitespace it detects. 
+		 */
 		
 		for(int i=0;i<b.length;i++)
 		{
 			d += b[i];
+			if(b[i]==' ')
 			{
-			if(d.equals("function"))
+				f = d.substring(0, d.length()-1); //Setting newly created string
+				d = ""; //Resetting string to nothing
+			if(f.equals("function"))
 			{
 				ListString.add("function");
-				d = "";
+				f = "";
 			}
-			else if(d.equals("a"))
-			{
-				ListString.add("a");
-				d = "";
+			else if(Character.isAlphabetic(f.charAt(0)) && f.length() == 1) //Detecting any letters
+			{															    //length of string is 1
+				ListString.add(f);
+				f = "";
 			}
-			else if(d.equals("("))
+			else if(f.equals("("))
 			{
 				ListString.add("(");
-				d = "";
+				f = "";
 			}
-			else if(d.equals(")"))
+			else if(f.equals(")"))
 			{
 				ListString.add(")");
-				d = "";
+				f = "";
 			}
-			else if(d.equals("x"))
+			else if(f.equals("x"))
 			{
 				ListString.add("x");
-				d = "";
+				f = "";
 			}
-			else if(d.equals("="))
+			else if(f.equals("="))
 			{
 				ListString.add("=");
-				d = "";
+				f = "";
 			}
-			else if(d.equals("4"))
+			else if(Character.isDigit(f.charAt(0)) && f.length() == 1) //Detecting any digits and 
+																	   //length of string is 1
 			{
-				ListString.add("4");
-				d = "";
+				ListString.add(f);
+				f = "";
 			}
-			else if(d.equals("end"))
+			else if(f.equals("end"))
 			{
 				ListString.add("end");
-				d = "";
+				f = "";
 			}
-			}
-			
+			else
+				System.out.println("Invalid lexeme: " + f );
 			
 		}
+		}
+		
 		e.close();
-		System.out.println(ListString.toString());
+		System.out.println("Token found: " + ListString.toString());
+}
 	}
 
-}
