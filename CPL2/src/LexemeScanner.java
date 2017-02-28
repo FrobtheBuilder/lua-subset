@@ -27,7 +27,7 @@ static String a = "";
 		for(int i=0;i<b.length;i++)
 		{
 			d += b[i];
-			if(b[i]==' ')
+			if(Character.isWhitespace(b[i]))
 			{
 				f = d.substring(0, d.length()-1); //Setting newly created string
 				d = ""; //Resetting string to nothing
@@ -51,11 +51,6 @@ static String a = "";
 				ListString.add(")");
 				f = "";
 			}
-			else if(f.equals("x"))
-			{
-				ListString.add("x");
-				f = "";
-			}
 			else if(f.equals("="))
 			{
 				ListString.add("=");
@@ -75,11 +70,11 @@ static String a = "";
 			else
 				System.out.println("Invalid lexeme: " + f );
 			
-		}
+			}
 		}
 		
 		e.close();
 		System.out.println("Token found: " + ListString.toString());
 }
-	}
+}
 
