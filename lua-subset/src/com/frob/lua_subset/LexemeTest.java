@@ -24,6 +24,8 @@ public class LexemeTest {
         addLit(LexemeType.LEFT_PAREN_TOK, "(");
         addLit(LexemeType.RIGHT_PAREN_TOK, ")");
         addLit(LexemeType.END_TOK, "end");
+        addLit(LexemeType.ASSIGN_TOK, "=");
+        addTest(LexemeType.LITERAL_INTEGER_TOK, "^[0-9]+$");
         addTest(LexemeType.ID_TOK, "^[a-z]$");
     }
     public ArrayList<LexemeType> getPossibilities(String fragment) {

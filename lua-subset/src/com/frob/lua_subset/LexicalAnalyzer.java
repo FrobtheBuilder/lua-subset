@@ -5,6 +5,8 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -16,8 +18,8 @@ public class LexicalAnalyzer {
     public LexicalAnalyzer() {
         tester = new LexemeTest();
     }
-    public ArrayList<String> analyze(String filename) {
-        ArrayList<String> lexemes = new ArrayList<>();
+    public LinkedHashMap<String, LexemeType> analyze(String filename) {
+        LinkedHashMap<String, LexemeType> lexemes = new LinkedHashMap<>();
 
         try {
             List<String> lines = Files.readAllLines(FileSystems.getDefault().getPath(filename));
@@ -26,6 +28,7 @@ public class LexicalAnalyzer {
                 String previousFragment = "";
                 int currentFragmentStart = 0;
                 int currentFragmentEnd = 0;
+                ArrayList<LexemeType> candidates = new ArrayList<>();
                 String line = l.replaceAll("\\s", "").concat(" ");
                 while (currentFragmentEnd < line.length()) {
                     previousFragment = currentFragment;
@@ -34,11 +37,13 @@ public class LexicalAnalyzer {
                     System.out.println(previousFragment);
                     System.out.println(currentFragment);
                     System.out.println(tester.getPossibilities(currentFragment));
-                    if (tester.getPossibilities(currentFragment).size() > 0) {
+                    ArrayList<LexemeType> possibleCandidates = tester.getPossibilities(currentFragment);
+                    if (possibleCandidates.size() > 0) {
                         previousFragment = currentFragment;
+                        candidates = possibleCandidates;
                     } else {
                         if (previousFragment.length() > 0) {
-                            lexemes.add(previousFragment);
+                            lexemes.put(previousFragment, candidates.get(0));
                             currentFragment = "";
                             previousFragment = "";
                             currentFragmentStart = currentFragmentEnd - 1;
