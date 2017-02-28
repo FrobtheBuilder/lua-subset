@@ -1,1 +1,1 @@
-function a () x = 2 end
+function a () end
