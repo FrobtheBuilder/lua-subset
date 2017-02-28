@@ -1,1 +1,3 @@
-function a () x = 5 end
+function a ()
+x = 5
+end

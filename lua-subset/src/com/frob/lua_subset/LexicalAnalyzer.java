@@ -25,7 +25,7 @@ public class LexicalAnalyzer {
             List<String> lines = Files.readAllLines(FileSystems.getDefault().getPath(filename));
             for (String l : lines) {
                 String currentFragment = "";
-                String previousFragment = "";
+                String previousFragment;
                 int currentFragmentStart = 0;
                 int currentFragmentEnd = 0;
                 ArrayList<LexemeType> candidates = new ArrayList<>();
@@ -34,22 +34,16 @@ public class LexicalAnalyzer {
                     previousFragment = currentFragment;
                     currentFragmentEnd++;
                     currentFragment = line.substring(currentFragmentStart, currentFragmentEnd);
-                    System.out.println(previousFragment);
-                    System.out.println(currentFragment);
-                    System.out.println(tester.getPossibilities(currentFragment));
                     ArrayList<LexemeType> possibleCandidates = tester.getPossibilities(currentFragment);
                     if (possibleCandidates.size() > 0) {
-                        previousFragment = currentFragment;
                         candidates = possibleCandidates;
-                    } else {
-                        if (previousFragment.length() > 0) {
-                            lexemes.put(previousFragment, candidates.get(0));
-                            currentFragment = "";
-                            previousFragment = "";
-                            currentFragmentStart = currentFragmentEnd - 1;
-                            currentFragmentEnd = currentFragmentStart;
-                            System.out.println(lexemes);
-                        }
+                    }
+                    else if (previousFragment.length() > 0) {
+                        lexemes.put(previousFragment, candidates.get(0));
+                        currentFragment = "";
+                        currentFragmentStart = currentFragmentEnd - 1;
+                        currentFragmentEnd = currentFragmentStart;
+                        System.out.println(lexemes);
                     }
                 }
             }
