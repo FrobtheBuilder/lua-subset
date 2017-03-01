@@ -3,6 +3,10 @@ package com.frob.lua_subset;
 /**
  * Created by Frob on 2/27/2017.
  */
+
+/*
+ * The Tokens types
+ */
 public enum LexemeType
 {
     FUNCTION_TOK, LEFT_PAREN_TOK, RIGHT_PAREN_TOK, IF_TOK, THEN_TOK, END_TOK,
