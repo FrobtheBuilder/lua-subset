@@ -13,11 +13,20 @@ import java.util.stream.Stream;
 /**
  * Created by Frob on 2/27/2017.
  */
+
+/*
+ * This class will start the process of analyzing the string and passing it
+ * to test the string for any lexemes.
+ */
 public class LexicalAnalyzer {
     LexemeTest tester;
     public LexicalAnalyzer() {
         tester = new LexemeTest();
     }
+    /*
+     * This function will scan the string in the test.lua, deleting all whitespace
+     * and testing for any lexemes in the file. 
+     */
     public LinkedHashMap<String, LexemeType> analyze(String filename) {
         LinkedHashMap<String, LexemeType> lexemes = new LinkedHashMap<>();
 
@@ -29,12 +38,12 @@ public class LexicalAnalyzer {
                 int currentFragmentStart = 0;
                 int currentFragmentEnd = 0;
                 ArrayList<LexemeType> candidates = new ArrayList<>();
-                String line = l.replaceAll("\\s", "").concat(" ");
+                String line = l.replaceAll("\\s", "").concat(" "); //Whitespace deleted
                 while (currentFragmentEnd < line.length()) {
                     previousFragment = currentFragment;
                     currentFragmentEnd++;
-                    currentFragment = line.substring(currentFragmentStart, currentFragmentEnd);
-                    ArrayList<LexemeType> possibleCandidates = tester.getPossibilities(currentFragment);
+                    currentFragment = line.substring(currentFragmentStart, currentFragmentEnd); //Newly created string without whitespaces
+                    ArrayList<LexemeType> possibleCandidates = tester.getPossibilities(currentFragment); //Calling the function for lexeme testing
                     if (possibleCandidates.size() > 0) {
                         candidates = possibleCandidates;
                     }
