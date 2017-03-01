@@ -1,6 +1,7 @@
 package com.frob.lua_subset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.regex.*;
 
@@ -62,6 +63,20 @@ public class LexemeTest {
             }
         });
         return possibilities;
+    }
+    public LexemeType strictMatch(String candidate) {
+        for (Map.Entry<LexemeType, String> e : literals.entrySet()) {
+            if (e.getValue().equals(candidate)) {
+                return e.getKey();
+            }
+        }
+        for (Map.Entry<LexemeType, Pattern> e : tests.entrySet()) {
+            Matcher m = e.getValue().matcher(candidate);
+            if (m.find()) {
+                return e.getKey();
+            }
+        }
+        return LexemeType.EOS_TOK; //fallback, this should never happen.
     }
     /*
     static HashMap<LexemeType, Function<String, Boolean>> getTests() {

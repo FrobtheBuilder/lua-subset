@@ -39,11 +39,18 @@ public class LexicalAnalyzer {
                         candidates = possibleCandidates;
                     }
                     else if (previousFragment.length() > 0) {
-                        lexemes.put(previousFragment, candidates.get(0));
+                        LexemeType tp;
+                        if (candidates.size() > 1) {
+                            tp = tester.strictMatch(previousFragment);
+                        }
+                        else {
+                            tp = candidates.get(0);
+                        }
+                        lexemes.put(previousFragment, tp);
                         currentFragment = "";
                         currentFragmentStart = currentFragmentEnd - 1;
                         currentFragmentEnd = currentFragmentStart;
-                        System.out.println(lexemes);
+                        //System.out.println(lexemes);
                     }
                 }
             }
