@@ -11,21 +11,17 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * Created by Frob on 2/27/2017.
- */
-
-/*
- * This class will start the process of analyzing the string and passing it
- * to test the string for any lexemes.
+ * Scans an input file and extracts lexemes.
  */
 public class LexicalAnalyzer {
     LexemeTest tester;
     public LexicalAnalyzer() {
         tester = new LexemeTest();
     }
-    /*
-     * This function will scan the string in the test.lua, deleting all whitespace
-     * and testing for any lexemes in the file. 
+    /**
+     * Analyze the input sequence and return a map of the extracted lexemes and their types.
+     * @param filename path to the input file
+     * @return Ordered map of the extracted lexemes and their respective types
      */
     public LinkedHashMap<String, LexemeType> analyze(String filename) {
         LinkedHashMap<String, LexemeType> lexemes = new LinkedHashMap<>();
@@ -63,16 +59,6 @@ public class LexicalAnalyzer {
                     }
                 }
             }
-            /*
-            Files.lines(FileSystems.getDefault().getPath(filename)).forEach(line -> {
-                for (int i=0; i < line.length(); i++) {
-                    if (currentFragment[0].length() == 0) {
-                        previousFragment[0] = currentFragment[0];
-                        currentFragment[0] = line.substring()
-                    }
-                }
-            });
-            */
         }
         catch (IOException e) {
             System.out.println(e.getMessage());

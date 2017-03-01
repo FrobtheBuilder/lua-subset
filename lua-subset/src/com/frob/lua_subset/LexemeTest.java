@@ -6,15 +6,11 @@ import java.util.function.Function;
 import java.util.regex.*;
 
 /**
- * Created by Frob on 2/27/2017.
- */
-
-/*
- * This class will begin the process of testing for lexemes given by the analyzer.
+ * A utility for matching character sequences to lexeme types.
  */
 public class LexemeTest {
-    HashMap<LexemeType, Pattern> tests; //Hashmap for finding pattern
-    HashMap<LexemeType, String> literals; //Hashmap for finding parts of the word
+    HashMap<LexemeType, Pattern> tests; //Hashmap for lexemes defined by regex patterns
+    HashMap<LexemeType, String> literals; //Hashmap for lexemes defined by fixed strings
     
     private void addTest(LexemeType type, String pattern) {
         tests.put(type, Pattern.compile(pattern));
@@ -23,8 +19,8 @@ public class LexemeTest {
         literals.put(type, literal);
     }
     
-    /*
-     * Constructor for LexemeTest for finding all types of token given by enum of LexemeType
+    /**
+     * Constructor sets up the associations between lexeme types and their acceptable patterns.
      */
     public LexemeTest() {
         tests = new HashMap<>();
@@ -59,9 +55,11 @@ public class LexemeTest {
         addTest(LexemeType.ID_TOK, "^[a-z]$");
     }
     
-    /*
-     * This will find parts of the word, if part of the word matches one of the lexeme,
-     * it will add possibilities ArrayList.
+    /**
+     * Get a list of possible lexeme matches from a fragment. Matches with regex or as the beginning
+     * of a literal pattern.
+     * @param fragment character sequence for which to find possible lexeme matches
+     * @return List of possibilities
      */
     public ArrayList<LexemeType> getPossibilities(String fragment) {
         ArrayList<LexemeType> possibilities = new ArrayList<>();
@@ -79,8 +77,11 @@ public class LexemeTest {
         return possibilities;
     }
     
-    /*
-     * This function will find stricter tokens found in the test.lua file.
+    /**
+     * Tests more strictly to break the tie in the case where a fragment is finalized
+     * with more than one possible candidate.
+     * @param candidate The candidate string to test
+     * @return The final decision on which lexeme type the candidate is
      */
     public LexemeType strictMatch(String candidate) {
         for (Map.Entry<LexemeType, String> e : literals.entrySet()) {
@@ -96,13 +97,4 @@ public class LexemeTest {
         }
         return LexemeType.EOS_TOK; //fallback, this should never happen.
     }
-    /*
-    static HashMap<LexemeType, Function<String, Boolean>> getTests() {
-        HashMap<LexemeType, Function<String, Boolean>> tests = new HashMap<>();
-        tests.put(LexemeType.FUNCTION_TOK, str -> {
-            return str.equals("function");
-        });
-        return tests;
-    }
-    */
 }

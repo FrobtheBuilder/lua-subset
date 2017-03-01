@@ -1,11 +1,7 @@
 package com.frob.lua_subset;
 
-/**
- * Created by Frob on 2/27/2017.
- */
-
 /*
- * The Tokens types
+ * All lexeme types
  */
 public enum LexemeType
 {

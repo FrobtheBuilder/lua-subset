@@ -1,7 +1,8 @@
 package com.frob.lua_subset;
 
 /*
- * Main function of the Scanner for test.lua file in detecting tokens. 
+ * Test harness, runs the scanner on the first argument provided to the executable
+ * and prints the lexeme hash.
  */
 public class Main {
 
