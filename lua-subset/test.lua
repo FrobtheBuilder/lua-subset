@@ -1,3 +1,6 @@
 function a ()
-x = 5
+if (< a, b) then
+else
+end
+x = + a, b
 end

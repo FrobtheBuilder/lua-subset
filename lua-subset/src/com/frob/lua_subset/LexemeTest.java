@@ -2,20 +2,19 @@ package com.frob.lua_subset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.regex.*;
 
 /**
  * A utility for matching character sequences to lexeme types.
  */
 public class LexemeTest {
-    HashMap<LexemeType, Pattern> tests; //Hashmap for lexemes defined by regex patterns
-    HashMap<LexemeType, String> literals; //Hashmap for lexemes defined by fixed strings
+    HashMap<Token, Pattern> tests; //Hashmap for lexemes defined by regex patterns
+    HashMap<Token, String> literals; //Hashmap for lexemes defined by fixed strings
     
-    private void addTest(LexemeType type, String pattern) {
+    private void addTest(Token type, String pattern) {
         tests.put(type, Pattern.compile(pattern));
     }
-    private void addLit(LexemeType type, String literal) {
+    private void addLit(Token type, String literal) {
         literals.put(type, literal);
     }
     
@@ -25,34 +24,35 @@ public class LexemeTest {
     public LexemeTest() {
         tests = new HashMap<>();
         literals = new HashMap<>();
-        addLit(LexemeType.FUNCTION_TOK, "function");
-        addLit(LexemeType.ADD_TOK, "+");
-        addLit(LexemeType.LEFT_PAREN_TOK, "(");
-        addLit(LexemeType.RIGHT_PAREN_TOK, ")");
-        addLit(LexemeType.END_TOK, "end");
-        addLit(LexemeType.ASSIGN_TOK, "=");
-        addLit(LexemeType.IF_TOK, "if");
-        addLit(LexemeType.ELSE_TOK, "else");
-        addLit(LexemeType.THEN_TOK, "then");
-        addLit(LexemeType.EQ_TOK, "==");
-        addLit(LexemeType.GT_TOK, ">");
-        addLit(LexemeType.LT_TOK, "<");
-        addLit(LexemeType.GE_TOK, ">=");
-        addLit(LexemeType.LE_TOK, "<=");
-        addLit(LexemeType.NE_TOK, "<>");
-        addLit(LexemeType.DO_TOK, "do");
-        addLit(LexemeType.PRINT_TOK, "print");
-        addLit(LexemeType.REPEAT_TOK, "repeat");
-        addLit(LexemeType.UNTIL_TOK, "until");
-        addLit(LexemeType.WHILE_TOK, "while");
-        addLit(LexemeType.ADD_TOK, "+");
-        addLit(LexemeType.SUB_TOK, "-");
-        addLit(LexemeType.MUL_TOK, "*");
-        addLit(LexemeType.DIV_TOK, "/");
-        addLit(LexemeType.EOS_TOK, ";");
+        addLit(Token.FUNCTION_TOK, "function");
+        addLit(Token.ADD_TOK, "+");
+        addLit(Token.LEFT_PAREN_TOK, "(");
+        addLit(Token.RIGHT_PAREN_TOK, ")");
+        addLit(Token.END_TOK, "end");
+        addLit(Token.ASSIGN_TOK, "=");
+        addLit(Token.IF_TOK, "if");
+        addLit(Token.ELSE_TOK, "else");
+        addLit(Token.THEN_TOK, "then");
+        addLit(Token.EQ_TOK, "==");
+        addLit(Token.GT_TOK, ">");
+        addLit(Token.LT_TOK, "<");
+        addLit(Token.GE_TOK, ">=");
+        addLit(Token.LE_TOK, "<=");
+        addLit(Token.NE_TOK, "<>");
+        addLit(Token.DO_TOK, "do");
+        addLit(Token.PRINT_TOK, "print");
+        addLit(Token.REPEAT_TOK, "repeat");
+        addLit(Token.UNTIL_TOK, "until");
+        addLit(Token.WHILE_TOK, "while");
+        addLit(Token.ADD_TOK, "+");
+        addLit(Token.SUB_TOK, "-");
+        addLit(Token.MUL_TOK, "*");
+        addLit(Token.DIV_TOK, "/");
+        addLit(Token.EOS_TOK, ";");
+        addLit(Token.SEPARATOR_TOK, ",");
 
-        addTest(LexemeType.LITERAL_INTEGER_TOK, "^[0-9]+$");
-        addTest(LexemeType.ID_TOK, "^[a-z]$");
+        addTest(Token.LITERAL_INTEGER_TOK, "^[0-9]+$");
+        addTest(Token.ID_TOK, "^[a-z]$");
     }
     
     /**
@@ -61,8 +61,8 @@ public class LexemeTest {
      * @param fragment character sequence for which to find possible lexeme matches
      * @return List of possibilities
      */
-    public ArrayList<LexemeType> getPossibilities(String fragment) {
-        ArrayList<LexemeType> possibilities = new ArrayList<>();
+    public ArrayList<Token> getPossibilities(String fragment) {
+        ArrayList<Token> possibilities = new ArrayList<>();
         literals.forEach((type, literal) -> {
             if (literal.startsWith(fragment)) {
                 possibilities.add(type);
@@ -83,18 +83,18 @@ public class LexemeTest {
      * @param candidate The candidate string to test
      * @return The final decision on which lexeme type the candidate is
      */
-    public LexemeType strictMatch(String candidate) {
-        for (Map.Entry<LexemeType, String> e : literals.entrySet()) {
+    public Token strictMatch(String candidate) {
+        for (Map.Entry<Token, String> e : literals.entrySet()) {
             if (e.getValue().equals(candidate)) {
                 return e.getKey();
             }
         }
-        for (Map.Entry<LexemeType, Pattern> e : tests.entrySet()) {
+        for (Map.Entry<Token, Pattern> e : tests.entrySet()) {
             Matcher m = e.getValue().matcher(candidate);
             if (m.find()) {
                 return e.getKey();
             }
         }
-        return LexemeType.EOS_TOK; //fallback, this should never happen.
+        return Token.EOS_TOK; //fallback, this should never happen.
     }
 }
